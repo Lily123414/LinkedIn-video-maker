@@ -86,3 +86,9 @@ AI API usage and GitHub Actions/storage can incur charges; monitor account quota
 Offline tests cover approval gates, payload reading, HTML escaping, and real FFmpeg /
 Chromium rendering using synthetic test media and mocked TTS. They do not establish live
 Notion access, OpenAI access, correct company facts, hosted automation, or publication.
+
+## Company media inventory
+
+For the separate read-only photo/video inventory, see [INVENTORY.md](INVENTORY.md).
+On Windows run `inventory-windows.cmd`. This does not run the video pipeline,
+require AI credentials, or change source files.
