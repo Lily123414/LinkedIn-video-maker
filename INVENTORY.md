@@ -7,9 +7,12 @@ of source photos/videos. It writes only a new CSV outside the source tree.
 ## Windows
 
 1. Download and extract the repository ZIP outside the source folder.
-2. Double-click **inventory-windows.cmd**. It uses an existing Python installation;
-   if Python is missing, it prints the official download address. No API key, FFmpeg,
-   video setup, or third-party Python package is required.
+2. Double-click **inventory-windows.cmd**. It uses built-in Windows PowerShell 5.1;
+   Python and extra packages are not required. No API key or video setup is required.
+   Keep inventory-windows.ps1 beside the launcher. If Windows blocks the downloaded
+   script, review it, then right-click it → Properties → Unblock if permitted by your
+   company. The launcher requests RemoteSigned for its process only; it does not
+   change your persistent execution policy or override company Group Policy.
 3. The report is created in `C:\Users\24463\OneDrive\Video` with a timestamp in its
    filename. That folder must already exist. Successful scans open Explorer with
    the CSV selected. Existing reports are never replaced.
@@ -32,7 +35,7 @@ of source photos/videos. It writes only a new CSV outside the source tree.
   OneDrive sharing links and generally cannot be opened from another computer.
 - Size, extension, and modified UTC come from file metadata. Other formats are
   ignored. Photos include common RAW formats; videos include common camera formats.
-- Symlinks and reparse directories (including junctions and some cloud directories)
+- Symlinks and reparse entries (including junctions and some cloud placeholders)
   are skipped to avoid following another location. Permission/listing failures are
   recorded as Scan issue rows. Any such rows mean the scan is incomplete.
 - The CSV uses UTF-8 with BOM for Windows/Excel. Potential spreadsheet formulas are
@@ -41,12 +44,18 @@ of source photos/videos. It writes only a new CSV outside the source tree.
 - A fatal write error may leave a partial new CSV. The tool preserves it and never
   deletes or overwrites it; choose another report name on a subsequent run.
 
-Command-line usage:
+PowerShell command-line usage:
 
 ```powershell
-py -3 media_inventory.py --source "D:\Lily\Ankarsrum\Company Knowledge Hub" --output "C:\Users\24463\OneDrive\Video\motor-media-inventory.csv"
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\inventory-windows.ps1 -Source "D:\Lily\Ankarsrum\Company Knowledge Hub" -Output "C:\Users\24463\OneDrive\Video\motor-media-inventory.csv"
 ```
 
 The cloud cannot access your D: drive. You must run this scanner locally. No actual
 company inventory or Notion database has been created by preparing this tool.
 Direct Notion creation remains unavailable until a usable editing connection exists.
+
+The PowerShell script has been exercised on PowerShell 7.4 with temporary fixtures
+for source preservation, category rules, overwrite refusal, skipped links, and empty
+folders. Native Windows PowerShell 5.1 execution still needs validation on your PC.
+The Python version remains available as an optional alternative; the Windows launcher
+no longer uses it.
