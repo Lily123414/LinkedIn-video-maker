@@ -92,7 +92,7 @@ try {
     $sourcePath = $sourceItem.FullName
     $sourcePrefix = $sourcePath.TrimEnd([char[]]@('\','/')) + [IO.Path]::DirectorySeparatorChar
     if (-not $Output) {
-        $reportFolder = Join-Path $env:USERPROFILE 'OneDrive\Video'
+        $reportFolder = Join-Path $env:USERPROFILE 'Downloads'
         $Output = Join-Path $reportFolder ('motor-media-inventory-' + (Get-Date -Format 'yyyyMMdd-HHmmss-fffffff') + '.csv')
     }
     $outputPath = [IO.Path]::GetFullPath($Output)

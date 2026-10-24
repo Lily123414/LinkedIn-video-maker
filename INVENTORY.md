@@ -13,7 +13,7 @@ of source photos/videos. It writes only a new CSV outside the source tree.
    script, review it, then right-click it → Properties → Unblock if permitted by your
    company. The launcher requests RemoteSigned for its process only; it does not
    change your persistent execution policy or override company Group Policy.
-3. The report is created in `C:\Users\24463\OneDrive\Video` with a timestamp in its
+3. The report is created in `C:\Users\24463\Downloads` with a timestamp in its
    filename. That folder must already exist. Successful scans open Explorer with
    the CSV selected. Existing reports are never replaced.
 4. In Notion, open Video Project and use **Import → CSV**, selecting the new report.
@@ -47,7 +47,7 @@ of source photos/videos. It writes only a new CSV outside the source tree.
 PowerShell command-line usage:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\inventory-windows.ps1 -Source "D:\Lily\Ankarsrum\Company Knowledge Hub" -Output "C:\Users\24463\OneDrive\Video\motor-media-inventory.csv"
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File .\inventory-windows.ps1 -Source "D:\Lily\Ankarsrum\Company Knowledge Hub" -Output "C:\Users\24463\Downloads\motor-media-inventory.csv"
 ```
 
 The cloud cannot access your D: drive. You must run this scanner locally. No actual
@@ -59,3 +59,7 @@ for source preservation, category rules, overwrite refusal, skipped links, and e
 folders. Native Windows PowerShell 5.1 execution still needs validation on your PC.
 The Python version remains available as an optional alternative; the Windows launcher
 no longer uses it.
+
+The default report folder is local Downloads. OneDrive may expose its folder as a
+reparse point; the scanner keeps its conservative link protection and avoids using
+that folder as the default output. Your source folder and existing media stay unchanged.

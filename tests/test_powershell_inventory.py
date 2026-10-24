@@ -70,4 +70,21 @@ class PowerShellInventoryTests(unittest.TestCase):
             result=self.execute(root,Path(tmp)/'report.csv')
             self.assertEqual(result.returncode,2,result.stdout+result.stderr)
 
+    def test_default_report_avoids_onedrive_reparse_folder(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)/'source';root.mkdir()
+            (root/'photo.jpg').write_bytes(b'fixture')
+            profile=Path(tmp)/'profile';profile.mkdir()
+            downloads=profile/'Downloads';downloads.mkdir()
+            cloud=Path(tmp)/'cloud';cloud.mkdir()
+            try: (profile/'OneDrive').symlink_to(cloud,target_is_directory=True)
+            except OSError: self.skipTest('Symbolic links unavailable')
+            environment=dict(os.environ, USERPROFILE=str(profile))
+            result=subprocess.run([PWSH,'-NoLogo','-NoProfile','-File',str(SCRIPT),
+                '-Source',str(root),'-NoOpen'],env=environment,capture_output=True,text=True)
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+            self.assertEqual(len(list(downloads.glob('motor-media-inventory-*.csv'))),1)
+            self.assertEqual(list(cloud.iterdir()),[])
+            self.assertEqual((root/'photo.jpg').read_bytes(),b'fixture')
+
 if __name__=='__main__': unittest.main()
